@@ -170,7 +170,7 @@ const CVPage = () => {
           {/* Wow Factor 3D Visual */}
           <motion.section
             variants={itemVariants}
-            className="mb-12 hidden md:block"
+            className="mb-12"
           >
             <TechVisual />
           </motion.section>

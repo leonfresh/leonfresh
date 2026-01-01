@@ -534,7 +534,7 @@ function PortfolioContent() {
           </section>
 
           {/* Wow Factor 3D Visual */}
-          <div className="max-w-[1400px] mx-auto px-6 mb-0 md:mb-[-100px] hidden md:block">
+          <div className="max-w-[1400px] mx-auto px-6 mb-0 md:mb-[-100px]">
             <TechVisual />
           </div>
 
