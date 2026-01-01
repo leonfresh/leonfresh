@@ -331,7 +331,7 @@ function PortfolioContent() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
                 </span>
                 <span className="text-xs font-semibold tracking-widest text-gray-300 uppercase">
-                  Available for Hire
+                  Open for freelance projects
                 </span>
               </div>
             </motion.div>
@@ -353,11 +353,11 @@ function PortfolioContent() {
               variants={itemVariants}
               className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-12"
             >
-              Engineering{" "}
+              I design and build{" "}
               <span className="text-teal-400 font-medium text-glow">
-                immersive digital experiences
+                premium websites, interactive experiences, and AI
               </span>{" "}
-              at the intersection of design and logic.
+              — fast, polished, and conversion-focused.
             </motion.p>
 
             <motion.div
@@ -371,6 +371,15 @@ function PortfolioContent() {
                 <div className="absolute inset-0 w-full h-full bg-teal-400 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out z-0" />
                 <span className="relative z-10 flex items-center gap-3 uppercase tracking-wider text-xs">
                   Explore Work <ChevronRight size={18} />
+                </span>
+              </a>
+
+              <a
+                href="#contact"
+                className="group relative px-12 py-4 rounded-full font-bold overflow-hidden transition-all hover:scale-105 border border-white/15 bg-white/5 hover:bg-white/10"
+              >
+                <span className="relative z-10 flex items-center gap-3 uppercase tracking-wider text-xs text-white">
+                  Start a Project <Mail size={18} />
                 </span>
               </a>
 
@@ -396,6 +405,35 @@ function PortfolioContent() {
                     CV
                   </span>
                 </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="mt-20 flex flex-col items-center gap-8"
+            >
+              <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold">
+                Previously worked with
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 opacity-40 hover:opacity-60 transition-opacity duration-500">
+                {[
+                  { name: "BMW", src: "/clients/bmw-group.svg" },
+                  { name: "CeBIT", src: "/clients/cebit.svg" },
+                  { name: "Sony", src: "/clients/sony.svg" },
+                  { name: "Maserati", src: "/clients/maserati.svg" },
+                ].map((client) => (
+                  <div
+                    key={client.name}
+                    className="h-12 md:h-14 w-36 md:w-44 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5"
+                  >
+                    <img
+                      src={client.src}
+                      alt={client.name}
+                      className="max-h-7 md:max-h-9 max-w-[72%] w-auto grayscale invert"
+                      style={{ filter: "invert(1) grayscale(1) brightness(2)" }}
+                    />
+                  </div>
+                ))}
               </div>
             </motion.div>
           </motion.div>

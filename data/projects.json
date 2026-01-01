@@ -41,7 +41,11 @@
         "label": "Role",
         "value": "Sole Designer & Web Dev"
       }
-    ]
+    ],
+    "thumbnailPosition": {
+      "x": 50,
+      "y": 66
+    }
   },
   {
     "id": "logos",
@@ -80,7 +84,98 @@
         "label": "Scope",
         "value": "Various clients"
       }
+    ],
+    "thumbnailPosition": {
+      "x": 48,
+      "y": 9
+    }
+  },
+  {
+    "id": "tahiti-travel",
+    "title": "TAHITI — Website & Brochure Revamp",
+    "category": "Web Design • Print • Front-end",
+    "description": "Art direction, design, and front-end implementation for Entire Travel Connection’s Tahiti brand refresh. The goal was a high-impact “wow factor” experience without sacrificing clarity and accessibility — a site that felt premium, but was still effortless to navigate.\n\nResults: the redesigned site significantly outperformed the original, with roughly triple the viewing time and around double the page views.",
+    "thumbnail": "/portfolio/tahiti-travel/tahiti-thumb.jpg",
+    "images": [
+      "/portfolio/tahiti-travel/web1.jpg",
+      "/portfolio/tahiti-travel/web2.jpg",
+      "/portfolio/tahiti-travel/site-stats.png",
+      "/portfolio/tahiti-travel/cover1.jpg",
+      "/portfolio/tahiti-travel/pg-out1.jpg",
+      "/portfolio/tahiti-travel/spread1.jpg",
+      "/portfolio/tahiti-travel/map1.jpg"
+    ],
+    "tags": [
+      "Art Direction",
+      "Web Design",
+      "Front-end",
+      "Print Design",
+      "Brochure"
+    ],
+    "stats": [
+      {
+        "label": "Client",
+        "value": "Entire Travel Connection"
+      },
+      {
+        "label": "Date",
+        "value": "Feb 2012"
+      },
+      {
+        "label": "Deliverables",
+        "value": "Website + 60-page brochure"
+      },
+      {
+        "label": "Role",
+        "value": "Art direction, design, coding"
+      }
     ]
+  },
+  {
+    "id": "photomanips",
+    "title": "Photo Manipulations — Photoshop Composites",
+    "category": "Photo Manipulation • Photoshop",
+    "description": "A collection of Photoshop manipulation and compositing work — combining photography, retouching, lighting, and colour grading to create cinematic visuals. These pieces were built to practice storytelling through imagery and push my compositing workflow.",
+    "thumbnail": "/portfolio/photomanips/thumb-aqua-compos.jpg",
+    "images": [
+      "/portfolio/photomanips/thumb-aqua-compos.jpg",
+      "/portfolio/photomanips/neon_parade_by_cixxy.jpg",
+      "/portfolio/photomanips/kinky-dance-cd1.jpg",
+      "/portfolio/photomanips/do_you_believe____by_cixxy_d16v6qz-375w-2x.jpg",
+      "/portfolio/photomanips/sin_city_effect___tutorial_by_cixxy.jpg",
+      "/portfolio/photomanips/the_passion_flavor_by_cixxy_d16n0gi-fullview.jpg",
+      "/portfolio/photomanips/d1738h2-ff5db77a-9d42-4fbd-96c5-26542dc8824c.jpg",
+      "/portfolio/photomanips/d1pxtyl-30efaef6-b614-4824-a685-a6f4c7fb0c5d.jpg"
+    ],
+    "tags": [
+      "Photoshop",
+      "Compositing",
+      "Retouching",
+      "Colour Grading",
+      "Photo Manipulation"
+    ],
+    "stats": [
+      {
+        "label": "Tool",
+        "value": "Adobe Photoshop"
+      },
+      {
+        "label": "Work",
+        "value": "Compositing + retouch"
+      },
+      {
+        "label": "Focus",
+        "value": "Lighting & mood"
+      },
+      {
+        "label": "Output",
+        "value": "Web"
+      }
+    ],
+    "thumbnailPosition": {
+      "x": 50,
+      "y": 16
+    }
   },
   {
     "id": "goalie",
@@ -126,6 +221,49 @@
     ]
   },
   {
+    "id": "bmw-maserati-sony",
+    "title": "SONY, BMW, Maserati — HTML5 Web Banners",
+    "category": "Motion • HTML5 Banners",
+    "description": "Set of HTML5 web banner advertisement animations for various clients. Produced with the industry standard app Google Web Designer.",
+    "thumbnail": "/portfolio/bmw-maserati-sony/thumbnail_bmw_maserati_sony.png",
+    "images": [
+      "/portfolio/bmw-maserati-sony/thumbnail_bmw_maserati_sony.png",
+      "/portfolio/bmw-maserati-sony/sony-stuff2.png",
+      "/portfolio/bmw-maserati-sony/bmw-01.mp4",
+      "/portfolio/bmw-maserati-sony/munich-xmas-v2.mp4",
+      "/portfolio/bmw-maserati-sony/bav-xmas-v1_fixed.mp4",
+      "/portfolio/bmw-maserati-sony/masarati3.mp4"
+    ],
+    "tags": [
+      "HTML5",
+      "Banner Ads",
+      "Animation",
+      "Google Web Designer"
+    ],
+    "stats": [
+      {
+        "label": "Client",
+        "value": "SONY Australia, BMW, Maserati"
+      },
+      {
+        "label": "Date",
+        "value": "Various"
+      },
+      {
+        "label": "Deliverable",
+        "value": "Web banner animations"
+      },
+      {
+        "label": "Tool",
+        "value": "Google Web Designer"
+      }
+    ],
+    "thumbnailPosition": {
+      "x": 51,
+      "y": 0
+    }
+  },
+  {
     "id": "illustrations",
     "title": "Illustrations — Vector Experiments",
     "category": "Illustration • Vector",
@@ -166,128 +304,6 @@
       {
         "label": "Output",
         "value": "Web/Print"
-      }
-    ]
-  },
-  {
-    "id": "photomanips",
-    "title": "Photo Manipulations — Photoshop Composites",
-    "category": "Photo Manipulation • Photoshop",
-    "description": "A collection of Photoshop manipulation and compositing work — combining photography, retouching, lighting, and colour grading to create cinematic visuals. These pieces were built to practice storytelling through imagery and push my compositing workflow.",
-    "thumbnail": "/portfolio/photomanips/thumb-aqua-compos.jpg",
-    "images": [
-      "/portfolio/photomanips/thumb-aqua-compos.jpg",
-      "/portfolio/photomanips/neon_parade_by_cixxy.jpg",
-      "/portfolio/photomanips/kinky-dance-cd1.jpg",
-      "/portfolio/photomanips/do_you_believe____by_cixxy_d16v6qz-375w-2x.jpg",
-      "/portfolio/photomanips/sin_city_effect___tutorial_by_cixxy.jpg",
-      "/portfolio/photomanips/the_passion_flavor_by_cixxy_d16n0gi-fullview.jpg",
-      "/portfolio/photomanips/d1738h2-ff5db77a-9d42-4fbd-96c5-26542dc8824c.jpg",
-      "/portfolio/photomanips/d1pxtyl-30efaef6-b614-4824-a685-a6f4c7fb0c5d.jpg"
-    ],
-    "tags": [
-      "Photoshop",
-      "Compositing",
-      "Retouching",
-      "Colour Grading",
-      "Photo Manipulation"
-    ],
-    "stats": [
-      {
-        "label": "Tool",
-        "value": "Adobe Photoshop"
-      },
-      {
-        "label": "Work",
-        "value": "Compositing + retouch"
-      },
-      {
-        "label": "Focus",
-        "value": "Lighting & mood"
-      },
-      {
-        "label": "Output",
-        "value": "Web"
-      }
-    ]
-  },
-  {
-    "id": "tahiti-travel",
-    "title": "TAHITI — Website & Brochure Revamp",
-    "category": "Web Design • Print • Front-end",
-    "description": "Art direction, design, and front-end implementation for Entire Travel Connection’s Tahiti brand refresh. The goal was a high-impact “wow factor” experience without sacrificing clarity and accessibility — a site that felt premium, but was still effortless to navigate.\n\nResults: the redesigned site significantly outperformed the original, with roughly triple the viewing time and around double the page views.",
-    "thumbnail": "/portfolio/tahiti-travel/tahiti-thumb.jpg",
-    "images": [
-      "/portfolio/tahiti-travel/web1.jpg",
-      "/portfolio/tahiti-travel/web2.jpg",
-      "/portfolio/tahiti-travel/site-stats.png",
-      "/portfolio/tahiti-travel/cover1.jpg",
-      "/portfolio/tahiti-travel/pg-out1.jpg",
-      "/portfolio/tahiti-travel/spread1.jpg",
-      "/portfolio/tahiti-travel/map1.jpg"
-    ],
-    "tags": [
-      "Art Direction",
-      "Web Design",
-      "Front-end",
-      "Print Design",
-      "Brochure"
-    ],
-    "stats": [
-      {
-        "label": "Client",
-        "value": "Entire Travel Connection"
-      },
-      {
-        "label": "Date",
-        "value": "Feb 2012"
-      },
-      {
-        "label": "Deliverables",
-        "value": "Website + 60-page brochure"
-      },
-      {
-        "label": "Role",
-        "value": "Art direction, design, coding"
-      }
-    ]
-  },
-  {
-    "id": "bmw-maserati-sony",
-    "title": "SONY, BMW, Maserati — HTML5 Web Banners",
-    "category": "Motion • HTML5 Banners",
-    "description": "Set of HTML5 web banner advertisement animations for various clients. Produced with the industry standard app Google Web Designer.",
-    "thumbnail": "/portfolio/bmw-maserati-sony/thumbnail_bmw_maserati_sony.png",
-    "images": [
-      "/portfolio/bmw-maserati-sony/thumbnail_bmw_maserati_sony.png",
-      "/portfolio/bmw-maserati-sony/sony-stuff2.png",
-      "/portfolio/bmw-maserati-sony/bmw-01.mp4",
-      "/portfolio/bmw-maserati-sony/munich-xmas-v2.mp4",
-      "/portfolio/bmw-maserati-sony/bav-xmas-v1_fixed.mp4",
-      "/portfolio/bmw-maserati-sony/masarati3.mp4"
-    ],
-    "tags": [
-      "HTML5",
-      "Banner Ads",
-      "Animation",
-      "Google Web Designer"
-    ],
-    "stats": [
-      {
-        "label": "Client",
-        "value": "SONY Australia, BMW, Maserati"
-      },
-      {
-        "label": "Date",
-        "value": "Various"
-      },
-      {
-        "label": "Deliverable",
-        "value": "Web banner animations"
-      },
-      {
-        "label": "Tool",
-        "value": "Google Web Designer"
       }
     ]
   },

@@ -21,11 +21,11 @@ h6 {
 html {
   scroll-behavior: smooth;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-  scrollbar-width: thin;
+  scrollbar-width: auto;
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 16px;
 }
 
 ::-webkit-scrollbar-track {
@@ -220,4 +220,22 @@ html {
   height: 100%;
   display: flex;
   flex-col: column;
+}
+
+/* Fade top/bottom edges without creating a hard "section" seam */
+.techvisual-fade {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
 }

@@ -301,7 +301,7 @@ const CVPage = () => {
                 <ul className="space-y-4">
                   {[
                     "Projects used by Kevin Mitnick & Guy Kawasaki",
-                    "30k YouTube Subscribers (11M+ views)",
+                    "35k YouTube Subscribers (18M+ views)",
                     "Gaming mods with millions of plays",
                     "2300 ELO Online Chess Rating",
                   ].map((ach, i) => (
