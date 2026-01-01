@@ -5,7 +5,11 @@ import { Send, Loader2, CheckCircle } from "lucide-react";
 import GlassCard from "./GlassCard";
 
 const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -46,7 +50,8 @@ const ContactForm: React.FC = () => {
         </h3>
         <p className="text-gray-400 mb-6">
           Thank you. I&apos;ve received your message and will respond to{" "}
-          <span className="text-white">{submittedEmail || "your email"}</span> shortly.
+          <span className="text-white">{submittedEmail || "your email"}</span>{" "}
+          shortly.
         </p>
         <button
           onClick={() => setStatus("idle")}
@@ -86,7 +91,9 @@ const ContactForm: React.FC = () => {
             type="email"
             placeholder="your@email.com"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             className="w-full bg-black/20 border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-teal-500 transition-colors placeholder:text-white/20"
             required
           />
@@ -119,7 +126,10 @@ const ContactForm: React.FC = () => {
           ) : (
             <>
               Send Message{" "}
-              <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+              <Send
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </>
           )}
         </button>

@@ -19,15 +19,24 @@ export async function POST(req: Request) {
     const message = (body.message ?? "").trim();
 
     if (!name || !email || !message) {
-      return NextResponse.json({ ok: false, error: "Missing fields" }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Missing fields" },
+        { status: 400 }
+      );
     }
     if (!isValidEmail(email)) {
-      return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Invalid email" },
+        { status: 400 }
+      );
     }
 
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ ok: false, error: "Server not configured" }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: "Server not configured" },
+        { status: 500 }
+      );
     }
 
     const resend = new Resend(apiKey);
@@ -40,16 +49,14 @@ export async function POST(req: Request) {
       to,
       subject: `Portfolio Contact — ${name}`,
       replyTo: email,
-      text: [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        "",
-        message,
-      ].join("\n"),
+      text: [`Name: ${name}`, `Email: ${email}`, "", message].join("\n"),
     });
 
     return NextResponse.json({ ok: true });
   } catch {
-    return NextResponse.json({ ok: false, error: "Bad request" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "Bad request" },
+      { status: 400 }
+    );
   }
 }

@@ -2,22 +2,28 @@
 
 import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Sphere, MeshDistortMaterial, Points, PointMaterial } from "@react-three/drei";
+import {
+  Float,
+  Sphere,
+  MeshDistortMaterial,
+  Points,
+  PointMaterial,
+} from "@react-three/drei";
 import * as THREE from "three";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 
 function MouseLight() {
   const lightRef = useRef<THREE.PointLight>(null);
   const secondaryLightRef = useRef<THREE.PointLight>(null);
-  
+
   useFrame((state) => {
     if (!lightRef.current || !secondaryLightRef.current) return;
     const x = (state.mouse.x * state.viewport.width) / 2;
     const y = (state.mouse.y * state.viewport.height) / 2;
-    
+
     // Primary Teal Light
     lightRef.current.position.set(x, y, 2);
-    
+
     // Secondary Purple Light (offset for contrast)
     secondaryLightRef.current.position.set(-x, -y, 1);
   });
@@ -25,7 +31,12 @@ function MouseLight() {
   return (
     <>
       <pointLight ref={lightRef} intensity={2} color="#2dd4bf" distance={8} />
-      <pointLight ref={secondaryLightRef} intensity={1.5} color="#a855f7" distance={10} />
+      <pointLight
+        ref={secondaryLightRef}
+        intensity={1.5}
+        color="#a855f7"
+        distance={10}
+      />
     </>
   );
 }
@@ -44,8 +55,8 @@ function FloatingCore() {
     if (materialRef.current) {
       // Morphing based on mouse position
       materialRef.current.distort = THREE.MathUtils.lerp(
-        materialRef.current.distort, 
-        0.4 + (1 - dist) * 0.5 + Math.abs(state.mouse.x) * 0.3, 
+        materialRef.current.distort,
+        0.4 + (1 - dist) * 0.5 + Math.abs(state.mouse.x) * 0.3,
         0.15
       );
 
@@ -55,7 +66,9 @@ function FloatingCore() {
       const b = THREE.MathUtils.lerp(0.75, 0.9, 0.15);
       materialRef.current.color.setRGB(r, g, b);
     }
-    meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, 1 + (1 - dist) * 0.2, 0.15));
+    meshRef.current.scale.setScalar(
+      THREE.MathUtils.lerp(meshRef.current.scale.x, 1 + (1 - dist) * 0.2, 0.15)
+    );
   });
 
   return (
@@ -122,7 +135,7 @@ function ParticleField({ count = 1000 }) {
 export default function TechVisual() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
   const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
   const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
@@ -135,7 +148,7 @@ export default function TechVisual() {
   };
 
   return (
-    <div 
+    <div
       onMouseMove={handleMouseMove}
       className="w-full h-[400px] relative group"
     >
@@ -145,36 +158,44 @@ export default function TechVisual() {
 
       {/* Subtle radial glow instead of linear gradient to avoid side seams */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.05)_0%,transparent_70%)] pointer-events-none" />
-      
+
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#2dd4bf" />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#0d9488" />
+        <pointLight
+          position={[-10, -10, -10]}
+          intensity={0.5}
+          color="#0d9488"
+        />
         <MouseLight />
         <FloatingCore />
         <ParticleField />
       </Canvas>
-      
+
       {/* Overlay Text with motion */}
       <div className="absolute inset-0 flex items-center justify-between px-12 md:px-24 pointer-events-none">
-        <motion.div 
+        <motion.div
           style={{ x: springX, y: springY }}
           className="flex flex-col items-start"
         >
           <div className="relative">
             <div className="absolute -inset-8 bg-purple-500/10 blur-2xl rounded-full" />
-            <span className="relative z-10 text-[10px] uppercase tracking-[0.8em] text-purple-400/60 font-black">Neural</span>
+            <span className="relative z-10 text-[10px] uppercase tracking-[0.8em] text-purple-400/60 font-black">
+              Neural
+            </span>
             <div className="w-12 h-[1px] bg-purple-500/30 mt-2" />
           </div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           style={{ x: springX, y: springY }}
           className="flex flex-col items-end"
         >
           <div className="relative">
             <div className="absolute -inset-8 bg-purple-500/10 blur-2xl rounded-full" />
-            <span className="relative z-10 text-[10px] uppercase tracking-[0.8em] text-purple-400/60 font-black">Active</span>
+            <span className="relative z-10 text-[10px] uppercase tracking-[0.8em] text-purple-400/60 font-black">
+              Active
+            </span>
             <div className="w-12 h-[1px] bg-purple-500/30 mt-2" />
           </div>
         </motion.div>
@@ -182,11 +203,14 @@ export default function TechVisual() {
 
       {/* Center HUD element */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.div 
-          style={{ 
-            x: useSpring(mouseX, { stiffness: 50, damping: 20 }), 
+        <motion.div
+          style={{
+            x: useSpring(mouseX, { stiffness: 50, damping: 20 }),
             y: useSpring(mouseY, { stiffness: 50, damping: 20 }),
-            scale: useSpring(useMotionValue(1), { stiffness: 200, damping: 10 })
+            scale: useSpring(useMotionValue(1), {
+              stiffness: 200,
+              damping: 10,
+            }),
           }}
           className="relative"
         >

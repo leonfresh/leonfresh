@@ -58,12 +58,24 @@ export async function POST(req: Request) {
   const orderedIds = body.orderedIds;
   const removeId = body.removeId;
 
-  if (!Array.isArray(orderedIds) || !orderedIds.every((x) => typeof x === "string")) {
-    return NextResponse.json({ error: "orderedIds must be string[]" }, { status: 400 });
+  if (
+    !Array.isArray(orderedIds) ||
+    !orderedIds.every((x) => typeof x === "string")
+  ) {
+    return NextResponse.json(
+      { error: "orderedIds must be string[]" },
+      { status: 400 }
+    );
   }
 
-  if (typeof removeId !== "undefined" && (typeof removeId !== "string" || removeId.length === 0)) {
-    return NextResponse.json({ error: "removeId must be a non-empty string" }, { status: 400 });
+  if (
+    typeof removeId !== "undefined" &&
+    (typeof removeId !== "string" || removeId.length === 0)
+  ) {
+    return NextResponse.json(
+      { error: "removeId must be a non-empty string" },
+      { status: 400 }
+    );
   }
 
   const projects = await readProjects();
@@ -73,7 +85,9 @@ export async function POST(req: Request) {
     if (p && typeof p.id === "string") existingById.set(p.id, p);
   }
 
-  const nextOrderedIds = uniqueStrings(orderedIds).filter((id) => existingById.has(id));
+  const nextOrderedIds = uniqueStrings(orderedIds).filter((id) =>
+    existingById.has(id)
+  );
 
   // Append any projects that were not included in orderedIds (stable).
   for (const p of projects) {

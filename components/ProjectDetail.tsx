@@ -12,7 +12,12 @@ type LightboxItem = {
 
 function getMediaKind(src: string): LightboxItem["kind"] {
   const lower = src.toLowerCase();
-  if (lower.endsWith(".mp4") || lower.endsWith(".webm") || lower.endsWith(".mov")) return "video";
+  if (
+    lower.endsWith(".mp4") ||
+    lower.endsWith(".webm") ||
+    lower.endsWith(".mov")
+  )
+    return "video";
   return "image";
 }
 
@@ -30,10 +35,12 @@ function toYouTubeEmbedUrl(url: string): string | null {
       if (id) return `https://www.youtube.com/embed/${id}`;
 
       const embedMatch = u.pathname.match(/\/embed\/([^/?#]+)/);
-      if (embedMatch?.[1]) return `https://www.youtube.com/embed/${embedMatch[1]}`;
+      if (embedMatch?.[1])
+        return `https://www.youtube.com/embed/${embedMatch[1]}`;
 
       const shortsMatch = u.pathname.match(/\/shorts\/([^/?#]+)/);
-      if (shortsMatch?.[1]) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+      if (shortsMatch?.[1])
+        return `https://www.youtube.com/embed/${shortsMatch[1]}`;
     }
 
     return null;
@@ -76,8 +83,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
 
   useEffect(() => {
     // Disable body scroll when modal is open and compensate for scrollbar width
-    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
+    const scrollBarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
     document.body.style.overflow = "hidden";
     if (scrollBarWidth > 0) {
       document.body.style.paddingRight = `${scrollBarWidth}px`;
@@ -120,7 +128,10 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
       className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xl px-0 md:px-8"
     >
       {lightboxItem && (
-        <div className="fixed inset-0 z-[60]" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-[60]"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div
             className="absolute inset-0 bg-black/90 backdrop-blur-md"
             onClick={() => setLightboxItem(null)}
@@ -154,7 +165,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
         </div>
       )}
 
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-6xl mx-auto min-h-screen md:min-h-0 md:my-12 bg-[#0a0a0a] rounded-none md:rounded-3xl overflow-hidden border-0 md:border border-white/10 shadow-2xl flex flex-col-reverse md:flex-row"
       >
@@ -197,7 +208,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
                         alt={`${project.title} screenshot ${idx + 1}`}
                         className="w-full h-auto rounded-xl shadow-2xl select-none"
                         draggable={false}
-                        onClick={() => setLightboxItem({ src: img, kind: "image" })}
+                        onClick={() =>
+                          setLightboxItem({ src: img, kind: "image" })
+                        }
                       />
                     )}
                   </Reorder.Item>
@@ -219,7 +232,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
                       src={img}
                       alt={`${project.title} screenshot ${idx + 1}`}
                       className="w-full h-auto rounded-xl shadow-2xl"
-                      onClick={() => setLightboxItem({ src: img, kind: "image" })}
+                      onClick={() =>
+                        setLightboxItem({ src: img, kind: "image" })
+                      }
                     />
                   )}
                 </div>

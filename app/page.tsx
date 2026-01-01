@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useEffect, Suspense } from "react";
-import { AnimatePresence, motion, Reorder, useDragControls } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  Reorder,
+  useDragControls,
+} from "framer-motion";
 import {
   ArrowUpRight,
   Briefcase,
@@ -21,7 +26,7 @@ import {
   Monitor,
   Layers,
   Type,
-  Code
+  Code,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -117,7 +122,9 @@ function PortfolioContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS);
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null
+  );
 
   // Sync URL with selected project
   useEffect(() => {
@@ -138,8 +145,12 @@ function PortfolioContent() {
   };
   const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
-  const saveReorderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const saveProjectsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const saveReorderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const saveProjectsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const selectedProject = selectedProjectId
     ? projects.find((p) => p.id === selectedProjectId) ?? null
@@ -262,7 +273,7 @@ function PortfolioContent() {
               { label: "Stack", href: "#stack" },
               { label: "CV", href: "/cv", isLink: true },
               { label: "Contact", href: "#contact" },
-            ].map((item) => (
+            ].map((item) =>
               item.isLink ? (
                 <Link
                   key={item.label}
@@ -280,7 +291,7 @@ function PortfolioContent() {
                   {item.label}
                 </a>
               )
-            ))}
+            )}
           </div>
         </div>
       </nav>
@@ -306,7 +317,10 @@ function PortfolioContent() {
             animate="show"
             className="relative z-10 max-w-5xl mx-auto"
           >
-            <motion.div variants={itemVariants} className="mb-6 flex justify-center">
+            <motion.div
+              variants={itemVariants}
+              className="mb-6 flex justify-center"
+            >
               <div className="flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
@@ -450,13 +464,10 @@ function PortfolioContent() {
                           <span className="text-[10px] uppercase tracking-[0.3em] text-teal-400 font-bold">
                             {project.category}
                           </span>
-                          <h3 className="text-3xl md:text-4xl font-bold mt-3 mb-3 font-[Outfit] leading-tight">
+                          <h3 className="mt-3 font-[Outfit] font-bold leading-snug text-2xl md:text-3xl xl:text-4xl line-clamp-2">
                             {project.title}
                           </h3>
-                          <p className="text-gray-300/70 line-clamp-2 text-sm leading-relaxed max-w-xl">
-                            {project.description}
-                          </p>
-                          <div className="flex flex-wrap gap-2 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <div className="flex flex-wrap gap-2 mt-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             {project.tags.slice(0, 3).map((tag) => (
                               <span
                                 key={tag}
@@ -480,7 +491,10 @@ function PortfolioContent() {
             <TechVisual />
           </div>
 
-          <section id="stack" className="mb-24 md:mb-40 border-y border-white/5 py-16 md:py-24">
+          <section
+            id="stack"
+            className="mb-24 md:mb-40 border-y border-white/5 py-16 md:py-24"
+          >
             <div className="max-w-[1400px] mx-auto px-6">
               <h3 className="text-[10px] uppercase tracking-[0.4em] text-teal-400 font-bold mb-8 md:mb-12 flex items-center gap-3">
                 <span className="w-8 h-[1px] bg-teal-400/30" />
@@ -488,27 +502,91 @@ function PortfolioContent() {
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
                 {[
-                  { name: "Unity 3D", icon: Gamepad2, level: "Expert", desc: "Game Dev & Interactive" },
-                  { name: "React / Next.js", icon: Code2, level: "Expert", desc: "Modern Web Apps" },
-                  { name: "TypeScript", icon: Terminal, level: "Expert", desc: "Type-safe Dev" },
-                  { name: "Adobe Suite", icon: Palette, level: "Expert", desc: "PS, AI, ID, AE" },
-                  { name: "AI Tech", icon: Sparkles, level: "Expert", desc: "LLMs & Automation" },
-                  { name: "Unity C#", icon: Zap, level: "Expert", desc: "Scripting & Logic" },
-                  { name: "PHP / WP", icon: Globe, level: "Expert", desc: "Backend & CMS" },
-                  { name: "Python", icon: Cpu, level: "Expert", desc: "Scripting & AI" },
-                  { name: "UI / UX", icon: Monitor, level: "Expert", desc: "Digital Design" },
-                  { name: "Motion Graphics", icon: Layers, level: "Expert", desc: "Video & Animation" },
-                  { name: "Typography", icon: Type, level: "Expert", desc: "Layout & Branding" },
-                  { name: "Tailwind CSS", icon: Code, level: "Expert", desc: "Modern Styling" },
+                  {
+                    name: "Unity 3D",
+                    icon: Gamepad2,
+                    level: "Expert",
+                    desc: "Game Dev & Interactive",
+                  },
+                  {
+                    name: "React / Next.js",
+                    icon: Code2,
+                    level: "Expert",
+                    desc: "Modern Web Apps",
+                  },
+                  {
+                    name: "TypeScript",
+                    icon: Terminal,
+                    level: "Expert",
+                    desc: "Type-safe Dev",
+                  },
+                  {
+                    name: "Adobe Suite",
+                    icon: Palette,
+                    level: "Expert",
+                    desc: "PS, AI, ID, AE",
+                  },
+                  {
+                    name: "AI Tech",
+                    icon: Sparkles,
+                    level: "Expert",
+                    desc: "LLMs & Automation",
+                  },
+                  {
+                    name: "Unity C#",
+                    icon: Zap,
+                    level: "Expert",
+                    desc: "Scripting & Logic",
+                  },
+                  {
+                    name: "PHP / WP",
+                    icon: Globe,
+                    level: "Expert",
+                    desc: "Backend & CMS",
+                  },
+                  {
+                    name: "Python",
+                    icon: Cpu,
+                    level: "Expert",
+                    desc: "Scripting & AI",
+                  },
+                  {
+                    name: "UI / UX",
+                    icon: Monitor,
+                    level: "Expert",
+                    desc: "Digital Design",
+                  },
+                  {
+                    name: "Motion Graphics",
+                    icon: Layers,
+                    level: "Expert",
+                    desc: "Video & Animation",
+                  },
+                  {
+                    name: "Typography",
+                    icon: Type,
+                    level: "Expert",
+                    desc: "Layout & Branding",
+                  },
+                  {
+                    name: "Tailwind CSS",
+                    icon: Code,
+                    level: "Expert",
+                    desc: "Modern Styling",
+                  },
                 ].map((tech) => (
-                  <div 
+                  <div
                     key={tech.name}
                     className="group relative p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/5 border border-white/5 hover:border-teal-500/50 hover:bg-teal-500/5 transition-all duration-500 overflow-hidden"
                   >
                     <div className="absolute -right-6 -top-6 w-24 h-24 bg-teal-500/10 rounded-full blur-3xl group-hover:bg-teal-500/20 transition-all duration-500" />
                     <tech.icon className="mb-3 md:mb-4 w-7 h-7 md:w-8 md:h-8 text-gray-400 group-hover:text-teal-400 group-hover:scale-110 transition-all duration-500" />
-                    <h4 className="text-sm font-bold text-white mb-1 group-hover:text-teal-400 transition-colors leading-tight">{tech.name}</h4>
-                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest mb-2">{tech.level}</p>
+                    <h4 className="text-sm font-bold text-white mb-1 group-hover:text-teal-400 transition-colors leading-tight">
+                      {tech.name}
+                    </h4>
+                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest mb-2">
+                      {tech.level}
+                    </p>
                     <p className="text-[10px] text-gray-400 leading-tight opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500">
                       {tech.desc}
                     </p>

@@ -2,7 +2,13 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Points, PointMaterial, Text } from "@react-three/drei";
+import {
+  Float,
+  MeshDistortMaterial,
+  Points,
+  PointMaterial,
+  Text,
+} from "@react-three/drei";
 import * as THREE from "three";
 
 function getPointer(state: any) {
@@ -28,26 +34,38 @@ function AnimatedTorus({ rotation = [0, 0, 0], scale = 1 }) {
     // Manipulate distortion and color based on mouse position
     if (materialRef.current) {
       const dist = Math.sqrt(pointer.x ** 2 + pointer.y ** 2);
-      
+
       // Morphing logic: different distortion based on quadrant
       const morphX = pointer.x * 0.5;
       const targetDistort = 0.3 + (1 - dist) * 0.6 + Math.abs(morphX);
       const targetSpeed = 2 + (1 - dist) * 8;
-      
-      materialRef.current.distort = damp(materialRef.current.distort, targetDistort, 28, delta);
-      materialRef.current.speed = damp(materialRef.current.speed, targetSpeed, 28, delta);
+
+      materialRef.current.distort = damp(
+        materialRef.current.distort,
+        targetDistort,
+        28,
+        delta
+      );
+      materialRef.current.speed = damp(
+        materialRef.current.speed,
+        targetSpeed,
+        28,
+        delta
+      );
 
       // Color shifting logic: Teal to Purple/Blue based on mouse position
       const r = THREE.MathUtils.lerp(0.17, 0.4 + pointer.x * 0.2, 0.65);
       const g = THREE.MathUtils.lerp(0.83, 0.2 + pointer.y * 0.2, 0.65);
       const b = THREE.MathUtils.lerp(0.75, 0.9, 0.65);
-      
+
       materialRef.current.color.setRGB(r, g, b);
     }
 
     // Subtle scale pulse based on mouse
     const targetScale = scale * (1 + (1 - Math.abs(pointer.x)) * 0.15);
-    meshRef.current.scale.setScalar(damp(meshRef.current.scale.x, targetScale, 30, delta));
+    meshRef.current.scale.setScalar(
+      damp(meshRef.current.scale.x, targetScale, 30, delta)
+    );
   });
 
   return (
@@ -76,15 +94,25 @@ function Kaleidoscope() {
     // Rotate the entire kaleidoscope based on mouse
     const targetRotY = pointer.x * 0.9;
     const targetRotX = -pointer.y * 0.9;
-    groupRef.current.rotation.y = damp(groupRef.current.rotation.y, targetRotY, 35, delta);
-    groupRef.current.rotation.x = damp(groupRef.current.rotation.x, targetRotX, 35, delta);
+    groupRef.current.rotation.y = damp(
+      groupRef.current.rotation.y,
+      targetRotY,
+      35,
+      delta
+    );
+    groupRef.current.rotation.x = damp(
+      groupRef.current.rotation.x,
+      targetRotX,
+      35,
+      delta
+    );
   });
 
   return (
     <group ref={groupRef}>
       {/* Center piece */}
       <AnimatedTorus scale={1} />
-      
+
       {/* Mirrored pieces for kaleidoscope effect */}
       {[0, 1, 2, 3, 4, 5].map((i) => {
         const angle = (i / 6) * Math.PI * 2;
@@ -121,13 +149,24 @@ function DataStream({ count = 50 }) {
   );
 }
 
-function LineStream({ x, z, height, speed }: { x: number; z: number; height: number; speed: number }) {
+function LineStream({
+  x,
+  z,
+  height,
+  speed,
+}: {
+  x: number;
+  z: number;
+  height: number;
+  speed: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const isPurple = useMemo(() => Math.random() > 0.7, []);
-  
+
   useFrame((state, delta) => {
     if (!ref.current) return;
-    ref.current.position.y = ((state.clock.getElapsedTime() * speed * 100) % height) - height / 2;
+    ref.current.position.y =
+      ((state.clock.getElapsedTime() * speed * 100) % height) - height / 2;
 
     // React to mouse proximity
     const pointer = getPointer(state);
@@ -136,7 +175,7 @@ function LineStream({ x, z, height, speed }: { x: number; z: number; height: num
     const dx = ref.current.position.x - mouseX;
     const dy = ref.current.position.y - mouseY;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (dist < 3) {
       const force = (3 - dist) / 3;
       ref.current.position.x += dx * force * 0.1;
@@ -150,7 +189,11 @@ function LineStream({ x, z, height, speed }: { x: number; z: number; height: num
   return (
     <mesh ref={ref} position={[x, 0, z]}>
       <boxGeometry args={[0.02, 1, 0.02]} />
-      <meshBasicMaterial color={isPurple ? "#a855f7" : "#2dd4bf"} transparent opacity={isPurple ? 0.4 : 0.2} />
+      <meshBasicMaterial
+        color={isPurple ? "#a855f7" : "#2dd4bf"}
+        transparent
+        opacity={isPurple ? 0.4 : 0.2}
+      />
     </mesh>
   );
 }
@@ -171,7 +214,7 @@ function ParticleCloud({ count = 2000 }) {
   useFrame((state, delta) => {
     if (!ref.current) return;
     ref.current.rotation.y = state.clock.getElapsedTime() * 0.02;
-    
+
     // Subtle tilt based on mouse
     const pointer = getPointer(state);
     const x = (pointer.x * Math.PI) / 18;
@@ -197,17 +240,17 @@ function ParticleCloud({ count = 2000 }) {
 function MouseLight() {
   const lightRef = useRef<THREE.PointLight>(null);
   const secondaryLightRef = useRef<THREE.PointLight>(null);
-  
+
   useFrame((state) => {
     if (!lightRef.current || !secondaryLightRef.current) return;
     const pointer = getPointer(state);
     // Convert normalized mouse coordinates to world space
     const x = (pointer.x * state.viewport.width) / 2;
     const y = (pointer.y * state.viewport.height) / 2;
-    
+
     // Primary Teal Light
     lightRef.current.position.set(x, y, 2);
-    
+
     // Secondary Purple Light (mirrored for contrast)
     secondaryLightRef.current.position.set(-x, -y, 1);
   });
@@ -215,7 +258,12 @@ function MouseLight() {
   return (
     <>
       <pointLight ref={lightRef} intensity={2} color="#2dd4bf" distance={10} />
-      <pointLight ref={secondaryLightRef} intensity={1.5} color="#a855f7" distance={12} />
+      <pointLight
+        ref={secondaryLightRef}
+        intensity={1.5}
+        color="#a855f7"
+        distance={12}
+      />
     </>
   );
 }

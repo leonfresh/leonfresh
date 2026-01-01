@@ -24,7 +24,11 @@ async function readProjects(): Promise<ProjectJson[]> {
 
 async function writeProjects(projects: ProjectJson[]): Promise<void> {
   await fs.mkdir(path.dirname(PROJECTS_PATH), { recursive: true });
-  await fs.writeFile(PROJECTS_PATH, JSON.stringify(projects, null, 2) + "\n", "utf8");
+  await fs.writeFile(
+    PROJECTS_PATH,
+    JSON.stringify(projects, null, 2) + "\n",
+    "utf8"
+  );
 }
 
 export async function POST(req: Request) {
@@ -49,11 +53,17 @@ export async function POST(req: Request) {
   const images = body.images;
 
   if (typeof projectId !== "string" || projectId.length === 0) {
-    return NextResponse.json({ error: "projectId is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "projectId is required" },
+      { status: 400 }
+    );
   }
 
   if (!Array.isArray(images) || !images.every((x) => typeof x === "string")) {
-    return NextResponse.json({ error: "images must be string[]" }, { status: 400 });
+    return NextResponse.json(
+      { error: "images must be string[]" },
+      { status: 400 }
+    );
   }
 
   const projects = await readProjects();
@@ -62,7 +72,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unknown projectId" }, { status: 404 });
   }
 
-  const current = Array.isArray(projects[idx]?.images) ? (projects[idx].images as string[]) : [];
+  const current = Array.isArray(projects[idx]?.images)
+    ? (projects[idx].images as string[])
+    : [];
   const currentSet = new Set(current);
 
   // Persist a safe reorder: keep only known images first, then append any new ones.
