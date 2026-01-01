@@ -4,6 +4,7 @@ export interface Project {
   category: string;
   description: string;
   thumbnail: string;
+  thumbnailPosition?: { x: number; y: number };
   images: string[];
   tags: string[];
   stats?: { label: string; value: string }[];

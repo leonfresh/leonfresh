@@ -53,6 +53,9 @@ function ReorderableProjectCard({
   onDelete: () => void;
 }) {
   const controls = useDragControls();
+  const objectPosition = project.thumbnailPosition
+    ? `${project.thumbnailPosition.x}% ${project.thumbnailPosition.y}%`
+    : "50% 50%";
 
   return (
     <Reorder.Item
@@ -69,13 +72,14 @@ function ReorderableProjectCard({
           <img
             src={project.thumbnail}
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.05]"
+            style={{ objectPosition }}
             alt={project.title}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
         </div>
 
-        <div className="relative z-10 h-full flex flex-col justify-between p-6">
-          <div className="flex justify-between items-start">
+        <div className="relative z-10 h-full p-6 flex flex-col">
+          <div className="absolute left-6 top-6 right-6 flex justify-between items-start">
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -103,7 +107,7 @@ function ReorderableProjectCard({
             </div>
           </div>
 
-          <div>
+          <div className="mt-auto pt-14">
             <span className="text-[10px] uppercase tracking-[0.3em] text-teal-400 font-bold">
               {project.category}
             </span>
@@ -143,8 +147,8 @@ function PortfolioContent() {
     setSelectedProjectId(null);
     router.push("/", { scroll: false });
   };
-  const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const saveReorderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
@@ -227,10 +231,10 @@ function PortfolioContent() {
     setSelectedProjectId((prev) => (prev === projectId ? null : prev));
   };
 
-  const handleHeroMouseMove = (e: React.MouseEvent) => {
-    if (!heroRef.current) return;
-    const rect = heroRef.current.getBoundingClientRect();
-    setHeroMouse({
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setMousePos({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     });
@@ -260,8 +264,19 @@ function PortfolioContent() {
   };
 
   return (
-    <div className="relative min-h-screen text-slate-100 selection:bg-teal-500/30 selection:text-white">
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen text-slate-100 selection:bg-teal-500/30 selection:text-white"
+    >
       <Background />
+
+      <div
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(1000px circle at ${mousePos.x}px ${mousePos.y}px, rgba(45, 212, 191, 0.05), transparent 40%)`,
+        }}
+      />
 
       <nav className="fixed top-0 left-0 right-0 z-40 p-6 md:p-8 transition-all duration-300 bg-gradient-to-b from-[#020617]/90 to-transparent backdrop-blur-[2px]">
         <div className="max-w-[1400px] mx-auto flex justify-between items-center">
@@ -297,19 +312,8 @@ function PortfolioContent() {
       </nav>
 
       <main>
-        <section
-          ref={heroRef}
-          onMouseMove={handleHeroMouseMove}
-          className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-6"
-        >
+        <section className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-6">
           <HeroVisual />
-
-          <div
-            className="pointer-events-none absolute inset-0 z-[5] transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(800px circle at ${heroMouse.x}px ${heroMouse.y}px, rgba(45, 212, 191, 0.12), transparent 40%)`,
-            }}
-          />
 
           <motion.div
             variants={containerVariants}
@@ -447,20 +451,25 @@ function PortfolioContent() {
                       <div className="absolute inset-0 z-0">
                         <img
                           src={project.thumbnail}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.05]"
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.05]"
+                          style={{
+                            objectPosition: project.thumbnailPosition
+                              ? `${project.thumbnailPosition.x}% ${project.thumbnailPosition.y}%`
+                              : "50% 50%",
+                          }}
                           alt={project.title}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
                       </div>
 
-                      <div className="relative z-10 h-full flex flex-col justify-between p-8">
-                        <div className="flex justify-end">
+                      <div className="relative z-10 h-full p-8 flex flex-col">
+                        <div className="absolute right-8 top-8">
                           <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-black/40 group-hover:bg-white group-hover:text-black transition-all">
                             <ArrowUpRight size={20} />
                           </div>
                         </div>
 
-                        <div>
+                        <div className="mt-auto pt-16">
                           <span className="text-[10px] uppercase tracking-[0.3em] text-teal-400 font-bold">
                             {project.category}
                           </span>
@@ -658,6 +667,11 @@ function PortfolioContent() {
             devMode={devMode}
             onReorderImages={(imgs) => {
               handleReorderImages(selectedProject.id, imgs);
+            }}
+            onUpdateProject={(nextProject) => {
+              setProjects((prev) =>
+                prev.map((p) => (p.id === nextProject.id ? nextProject : p))
+              );
             }}
           />
         )}

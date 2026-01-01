@@ -54,6 +54,7 @@ interface ProjectDetailProps {
   onClose: () => void;
   devMode?: boolean;
   onReorderImages?: (images: string[]) => void;
+  onUpdateProject?: (next: Project) => void;
 }
 
 const ProjectDetail: React.FC<ProjectDetailProps> = ({
@@ -61,11 +62,15 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
   onClose,
   devMode = false,
   onReorderImages,
+  onUpdateProject,
 }) => {
   const [images, setImages] = useState<string[]>(() => project.images);
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
   const [showScrollHint, setShowScrollHint] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [thumbX, setThumbX] = useState<number>(() => project.thumbnailPosition?.x ?? 50);
+  const [thumbY, setThumbY] = useState<number>(() => project.thumbnailPosition?.y ?? 50);
+  const saveThumbTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -112,6 +117,29 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [lightboxItem]);
+
+  useEffect(() => {
+    setThumbX(project.thumbnailPosition?.x ?? 50);
+    setThumbY(project.thumbnailPosition?.y ?? 50);
+  }, [project.id, project.thumbnailPosition?.x, project.thumbnailPosition?.y]);
+
+  const persistThumbnailPosition = (x: number, y: number) => {
+    if (!devMode) return;
+    if (saveThumbTimerRef.current) clearTimeout(saveThumbTimerRef.current);
+
+    saveThumbTimerRef.current = setTimeout(() => {
+      void fetch("/api/dev/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          updateProjectId: project.id,
+          thumbnailPosition: { x, y },
+        }),
+      }).catch(() => {
+        // ignore local persistence failures
+      });
+    }, 250);
+  };
 
   const handleReorder = (nextImages: string[]) => {
     setImages(nextImages);
@@ -300,6 +328,73 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
+              {devMode && (
+                <div className="mb-6 rounded-2xl border border-white/10 bg-black/40 p-4 backdrop-blur">
+                  <div className="text-[10px] uppercase tracking-[0.25em] text-gray-300 mb-3">
+                    Thumbnail crop (dev)
+                  </div>
+                  <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/30 h-32">
+                    <img
+                      src={project.thumbnail}
+                      alt="Thumbnail preview"
+                      className="h-full w-full object-cover"
+                      style={{ objectPosition: `${thumbX}% ${thumbY}%` }}
+                      draggable={false}
+                    />
+                  </div>
+
+                  <div className="mt-4 space-y-3">
+                    <label className="block">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-gray-400">
+                        <span>Position X</span>
+                        <span className="text-gray-500">{thumbX}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={thumbX}
+                        onChange={(e) => {
+                          const nextX = Number(e.target.value);
+                          setThumbX(nextX);
+                          const nextProject: Project = {
+                            ...project,
+                            thumbnailPosition: { x: nextX, y: thumbY },
+                          };
+                          onUpdateProject?.(nextProject);
+                          persistThumbnailPosition(nextX, thumbY);
+                        }}
+                        className="w-full"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-gray-400">
+                        <span>Position Y</span>
+                        <span className="text-gray-500">{thumbY}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={thumbY}
+                        onChange={(e) => {
+                          const nextY = Number(e.target.value);
+                          setThumbY(nextY);
+                          const nextProject: Project = {
+                            ...project,
+                            thumbnailPosition: { x: thumbX, y: nextY },
+                          };
+                          onUpdateProject?.(nextProject);
+                          persistThumbnailPosition(thumbX, nextY);
+                        }}
+                        className="w-full"
+                      />
+                    </label>
+                  </div>
+                </div>
+              )}
+
               <span className="text-teal-400 text-sm font-bold tracking-wider uppercase">
                 {project.category}
               </span>

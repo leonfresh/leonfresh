@@ -57,15 +57,25 @@ export async function POST(req: Request) {
 
   const orderedIds = body.orderedIds;
   const removeId = body.removeId;
+  const updateProjectId = body.updateProjectId;
+  const thumbnailPosition = body.thumbnailPosition;
 
-  if (
-    !Array.isArray(orderedIds) ||
-    !orderedIds.every((x) => typeof x === "string")
-  ) {
-    return NextResponse.json(
-      { error: "orderedIds must be string[]" },
-      { status: 400 }
-    );
+  const isUpdate = typeof updateProjectId === "string";
+
+  let orderedIdsArray: string[] = [];
+
+  if (!isUpdate) {
+    if (
+      !Array.isArray(orderedIds) ||
+      !orderedIds.every((x) => typeof x === "string")
+    ) {
+      return NextResponse.json(
+        { error: "orderedIds must be string[]" },
+        { status: 400 }
+      );
+    }
+
+    orderedIdsArray = orderedIds;
   }
 
   if (
@@ -78,6 +88,20 @@ export async function POST(req: Request) {
     );
   }
 
+  if (isUpdate) {
+    if (
+      typeof thumbnailPosition !== "undefined" &&
+      (!isRecord(thumbnailPosition) ||
+        typeof thumbnailPosition.x !== "number" ||
+        typeof thumbnailPosition.y !== "number")
+    ) {
+      return NextResponse.json(
+        { error: "thumbnailPosition must be { x: number, y: number }" },
+        { status: 400 }
+      );
+    }
+  }
+
   const projects = await readProjects();
 
   const existingById = new Map<string, ProjectJson>();
@@ -85,7 +109,26 @@ export async function POST(req: Request) {
     if (p && typeof p.id === "string") existingById.set(p.id, p);
   }
 
-  const nextOrderedIds = uniqueStrings(orderedIds).filter((id) =>
+  if (isUpdate) {
+    const target = existingById.get(updateProjectId);
+    if (!target) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    const next = projects.map((p) => {
+      if (p.id !== updateProjectId) return p;
+      const updated: ProjectJson = { ...p };
+      if (typeof thumbnailPosition !== "undefined") {
+        updated.thumbnailPosition = thumbnailPosition;
+      }
+      return updated;
+    });
+
+    await writeProjects(next);
+    return NextResponse.json({ ok: true, id: updateProjectId });
+  }
+
+  const nextOrderedIds = uniqueStrings(orderedIdsArray).filter((id) =>
     existingById.has(id)
   );
 
