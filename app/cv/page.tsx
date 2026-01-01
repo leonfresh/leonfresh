@@ -152,7 +152,7 @@ const CVPage = () => {
           </motion.header>
 
           {/* Wow Factor 3D Visual */}
-          <motion.section variants={itemVariants} className="mb-12">
+          <motion.section variants={itemVariants} className="mb-12 hidden md:block">
             <TechVisual />
           </motion.section>
 
@@ -162,7 +162,7 @@ const CVPage = () => {
               <span className="w-8 h-[1px] bg-teal-400/30" />
               Technical Stack
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
               {[
                 { name: "Unity 3D", icon: Gamepad2, level: "Expert", desc: "Game Dev & Interactive" },
                 { name: "React / Next.js", icon: Code2, level: "Expert", desc: "Modern Web Apps" },
@@ -179,13 +179,13 @@ const CVPage = () => {
               ].map((tech) => (
                 <div 
                   key={tech.name}
-                  className="group relative p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-500 overflow-hidden"
+                  className="group relative p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-500 overflow-hidden"
                 >
                   <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-500" />
-                  <tech.icon size={32} className="mb-4 text-gray-400 group-hover:text-purple-400 group-hover:scale-110 transition-all duration-500" />
-                  <h4 className="text-sm font-bold text-white mb-1 group-hover:text-purple-400 transition-colors">{tech.name}</h4>
+                  <tech.icon className="mb-3 md:mb-4 w-7 h-7 md:w-8 md:h-8 text-gray-400 group-hover:text-purple-400 group-hover:scale-110 transition-all duration-500" />
+                  <h4 className="text-sm font-bold text-white mb-1 group-hover:text-purple-400 transition-colors leading-tight">{tech.name}</h4>
                   <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest mb-2">{tech.level}</p>
-                  <p className="text-[10px] text-gray-400 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <p className="text-[10px] text-gray-400 leading-tight opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500">
                     {tech.desc}
                   </p>
                 </div>

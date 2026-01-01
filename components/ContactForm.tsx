@@ -9,17 +9,30 @@ const ContactForm: React.FC = () => {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+  const [submittedEmail, setSubmittedEmail] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
     setStatus("submitting");
+    setSubmittedEmail("");
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      setSubmittedEmail(formData.email);
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
-    }, 2000);
+    } catch {
+      setStatus("error");
+    }
   };
 
   if (status === "success") {
@@ -32,8 +45,8 @@ const ContactForm: React.FC = () => {
           Message Transmitted
         </h3>
         <p className="text-gray-400 mb-6">
-          Thank you. I have received your inquiry and will respond to{" "}
-          <span className="text-white">leonfreshdesign@gmail.com</span> shortly.
+          Thank you. I&apos;ve received your message and will respond to{" "}
+          <span className="text-white">{submittedEmail || "your email"}</span> shortly.
         </p>
         <button
           onClick={() => setStatus("idle")}
@@ -111,9 +124,15 @@ const ContactForm: React.FC = () => {
           )}
         </button>
 
-        <p className="text-[10px] text-gray-600 text-center uppercase tracking-wider">
-          Secure Connection • Response within 24h
-        </p>
+        {status === "error" ? (
+          <p className="text-[10px] text-red-300/80 text-center uppercase tracking-wider">
+            Send failed — please email leonfreshdesign@gmail.com
+          </p>
+        ) : (
+          <p className="text-[10px] text-gray-600 text-center uppercase tracking-wider">
+            Secure Connection • Response within 24h
+          </p>
+        )}
       </form>
     </GlassCard>
   );
