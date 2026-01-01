@@ -68,8 +68,12 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
   const [showScrollHint, setShowScrollHint] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [thumbX, setThumbX] = useState<number>(() => project.thumbnailPosition?.x ?? 50);
-  const [thumbY, setThumbY] = useState<number>(() => project.thumbnailPosition?.y ?? 50);
+  const [thumbX, setThumbX] = useState<number>(
+    () => project.thumbnailPosition?.x ?? 50
+  );
+  const [thumbY, setThumbY] = useState<number>(
+    () => project.thumbnailPosition?.y ?? 50
+  );
   const saveThumbTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {

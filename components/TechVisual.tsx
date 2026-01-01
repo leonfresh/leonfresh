@@ -19,7 +19,11 @@ function CapitalShip() {
     const hull = new THREE.BoxGeometry(0.4, 0.3, 2);
     const hullMesh = new THREE.LineSegments(
       new THREE.EdgesGeometry(hull),
-      new THREE.LineBasicMaterial({ color: "#2dd4bf", opacity: 0.8, transparent: true })
+      new THREE.LineBasicMaterial({
+        color: "#2dd4bf",
+        opacity: 0.8,
+        transparent: true,
+      })
     );
     group.add(hullMesh);
 
@@ -27,7 +31,11 @@ function CapitalShip() {
     const wingGeom = new THREE.BoxGeometry(2, 0.1, 0.6);
     const wingMesh = new THREE.LineSegments(
       new THREE.EdgesGeometry(wingGeom),
-      new THREE.LineBasicMaterial({ color: "#2dd4bf", opacity: 0.7, transparent: true })
+      new THREE.LineBasicMaterial({
+        color: "#2dd4bf",
+        opacity: 0.7,
+        transparent: true,
+      })
     );
     wingMesh.position.z = 0.3;
     group.add(wingMesh);
@@ -36,7 +44,11 @@ function CapitalShip() {
     const bridge = new THREE.BoxGeometry(0.3, 0.4, 0.3);
     const bridgeMesh = new THREE.LineSegments(
       new THREE.EdgesGeometry(bridge),
-      new THREE.LineBasicMaterial({ color: "#2dd4bf", opacity: 0.8, transparent: true })
+      new THREE.LineBasicMaterial({
+        color: "#2dd4bf",
+        opacity: 0.8,
+        transparent: true,
+      })
     );
     bridgeMesh.position.y = 0.35;
     bridgeMesh.position.z = -0.5;
@@ -48,24 +60,26 @@ function CapitalShip() {
   useFrame((state) => {
     if (!meshRef.current) return;
     // Gentle rotation
-    meshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.2;
-    meshRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
+    meshRef.current.rotation.y =
+      Math.sin(state.clock.getElapsedTime() * 0.3) * 0.2;
+    meshRef.current.rotation.x =
+      Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
   });
 
   return <primitive ref={meshRef} object={geometry} position={position} />;
 }
 
 // Fighter Ship - small wireframe geometry
-function FighterShip({ 
-  position, 
-  speed, 
-  delay, 
+function FighterShip({
+  position,
+  speed,
+  delay,
   onPositionUpdate,
   isRespawning,
-  respawnProgress
-}: { 
-  position: [number, number, number]; 
-  speed: number; 
+  respawnProgress,
+}: {
+  position: [number, number, number];
+  speed: number;
   delay: number;
   onPositionUpdate: (pos: THREE.Vector3) => void;
   isRespawning: boolean;
@@ -80,7 +94,11 @@ function FighterShip({
     const body = new THREE.ConeGeometry(0.08, 0.4, 3);
     const bodyMesh = new THREE.LineSegments(
       new THREE.EdgesGeometry(body),
-      new THREE.LineBasicMaterial({ color: "#a855f7", opacity: 0.9, transparent: true })
+      new THREE.LineBasicMaterial({
+        color: "#a855f7",
+        opacity: 0.9,
+        transparent: true,
+      })
     );
     bodyMesh.rotation.x = Math.PI / 2;
     group.add(bodyMesh);
@@ -89,7 +107,11 @@ function FighterShip({
     const wing = new THREE.BoxGeometry(0.4, 0.02, 0.15);
     const wingMesh = new THREE.LineSegments(
       new THREE.EdgesGeometry(wing),
-      new THREE.LineBasicMaterial({ color: "#a855f7", opacity: 0.8, transparent: true })
+      new THREE.LineBasicMaterial({
+        color: "#a855f7",
+        opacity: 0.8,
+        transparent: true,
+      })
     );
     group.add(wingMesh);
 
@@ -98,29 +120,41 @@ function FighterShip({
 
   useFrame((state) => {
     if (!meshRef.current) return;
-    
+
     const t = state.clock.getElapsedTime() * speed + delay;
-    
+
     if (isRespawning) {
       // Flying in from left side
       const startX = -5;
       const targetX = position[0] + Math.cos(t) * 1.5;
       const targetY = position[1] + Math.sin(t * 0.7) * 0.8;
       const targetZ = position[2] + Math.sin(t) * 1.2;
-      
-      meshRef.current.position.x = THREE.MathUtils.lerp(startX, targetX, respawnProgress);
-      meshRef.current.position.y = THREE.MathUtils.lerp(0, targetY, respawnProgress);
-      meshRef.current.position.z = THREE.MathUtils.lerp(0, targetZ, respawnProgress);
+
+      meshRef.current.position.x = THREE.MathUtils.lerp(
+        startX,
+        targetX,
+        respawnProgress
+      );
+      meshRef.current.position.y = THREE.MathUtils.lerp(
+        0,
+        targetY,
+        respawnProgress
+      );
+      meshRef.current.position.z = THREE.MathUtils.lerp(
+        0,
+        targetZ,
+        respawnProgress
+      );
     } else {
       // Normal circular attack pattern around capital ship
       meshRef.current.position.x = position[0] + Math.cos(t) * 1.5;
       meshRef.current.position.y = position[1] + Math.sin(t * 0.7) * 0.8;
       meshRef.current.position.z = position[2] + Math.sin(t) * 1.2;
     }
-    
+
     // Face movement direction
     meshRef.current.lookAt(2, 0, 0);
-    
+
     // Update position for collision detection
     onPositionUpdate(meshRef.current.position.clone());
   });
@@ -190,7 +224,11 @@ function Laser({
   const lineObj = useMemo(() => {
     const points = [start, end];
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color, opacity: 1, transparent: true });
+    const material = new THREE.LineBasicMaterial({
+      color,
+      opacity: 1,
+      transparent: true,
+    });
     materialRef.current = material;
     return new THREE.Line(geometry, material);
   }, [start, end, color]);
@@ -218,20 +256,20 @@ function Bullet({
 
   useFrame((state) => {
     const age = state.clock.getElapsedTime() - spawnTime;
-    
+
     // Move bullet forward
     posRef.current.add(direction.clone().multiplyScalar(0.1));
-    
+
     if (meshRef.current) {
       meshRef.current.position.copy(posRef.current);
     }
-    
+
     // Check if hit capital ship (position [2, 0, 0])
     const distToCapital = posRef.current.distanceTo(new THREE.Vector3(2, 0, 0));
     if (distToCapital < 0.8) {
       setOpacity(0);
     }
-    
+
     // Fade out after 1.5 seconds or after traveling far
     if (age > 1.5 || posRef.current.length() > 10) {
       setOpacity(0);
@@ -266,8 +304,9 @@ function Explosion({
     const scale = 0.1 + age * 1.5;
     meshRef.current.scale.setScalar(scale);
     opacityRef.current = Math.max(0, 1 - age * 2);
-    if (meshRef.current.material && 'opacity' in meshRef.current.material) {
-      (meshRef.current.material as THREE.MeshBasicMaterial).opacity = opacityRef.current;
+    if (meshRef.current.material && "opacity" in meshRef.current.material) {
+      (meshRef.current.material as THREE.MeshBasicMaterial).opacity =
+        opacityRef.current;
     }
   });
 
@@ -287,12 +326,12 @@ function Explosion({
 }
 
 // Battle coordinator
-function BattleScene({ 
-  fighterPositions, 
+function BattleScene({
+  fighterPositions,
   fighterHealth,
   respawningFighters,
   onFighterHit,
-}: { 
+}: {
   fighterPositions: THREE.Vector3[];
   fighterHealth: number[];
   respawningFighters: boolean[];
@@ -330,21 +369,24 @@ function BattleScene({
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    
+
     // Get active fighters (alive and not respawning)
     const activeFighterIndices = fighterPositions
       .map((_, idx) => idx)
-      .filter(idx => fighterHealth[idx] > 0 && !respawningFighters[idx]);
+      .filter((idx) => fighterHealth[idx] > 0 && !respawningFighters[idx]);
 
     // Capital ship shoots teal lasers at fighters every 1-1.5 seconds
     if (t - lastCapitalLaserTime.current > 1 + Math.random() * 0.5) {
       lastCapitalLaserTime.current = t;
-      
+
       if (activeFighterIndices.length > 0) {
         // Pick random active fighter to target
-        const targetIndex = activeFighterIndices[Math.floor(Math.random() * activeFighterIndices.length)];
+        const targetIndex =
+          activeFighterIndices[
+            Math.floor(Math.random() * activeFighterIndices.length)
+          ];
         const target = fighterPositions[targetIndex];
-        
+
         const newLaser = {
           id: laserIdCounter.current++,
           start: capitalPos.clone(),
@@ -359,7 +401,7 @@ function BattleScene({
           const newArray = [...prev, newLaser];
           return newArray.length > 20 ? newArray.slice(-20) : newArray;
         });
-        
+
         // Hit fighter - explosion only if destroyed
         setTimeout(() => {
           onFighterHit(targetIndex);
@@ -383,13 +425,16 @@ function BattleScene({
     // Fighters shoot purple bullets every 0.4-0.8 seconds
     if (t - lastBulletTime.current > 0.4 + Math.random() * 0.4) {
       lastBulletTime.current = t;
-      
+
       if (activeFighterIndices.length > 0) {
         // Pick random active fighter to shoot from
-        const shooterIndex = activeFighterIndices[Math.floor(Math.random() * activeFighterIndices.length)];
+        const shooterIndex =
+          activeFighterIndices[
+            Math.floor(Math.random() * activeFighterIndices.length)
+          ];
         const shooterPos = fighterPositions[shooterIndex];
         const direction = capitalPos.clone().sub(shooterPos).normalize();
-        
+
         const newBullet = {
           id: bulletIdCounter.current++,
           start: shooterPos.clone(),
@@ -435,8 +480,16 @@ export default function TechVisual() {
   const mouseY = useMotionValue(0);
   const [fighterPositions, setFighterPositions] = useState<THREE.Vector3[]>([]);
   const [fighterHealth, setFighterHealth] = useState<number[]>([3, 3, 3, 3, 3]);
-  const [respawningFighters, setRespawningFighters] = useState<boolean[]>([false, false, false, false, false]);
-  const [respawnProgress, setRespawnProgress] = useState<number[]>([1, 1, 1, 1, 1]);
+  const [respawningFighters, setRespawningFighters] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [respawnProgress, setRespawnProgress] = useState<number[]>([
+    1, 1, 1, 1, 1,
+  ]);
   const [fighters, setFighters] = useState([
     { id: 0, speed: 0.8, delay: 0 },
     { id: 1, speed: 0.9, delay: 2 },
@@ -444,7 +497,7 @@ export default function TechVisual() {
     { id: 3, speed: 0.95, delay: 1 },
     { id: 4, speed: 0.75, delay: 3 },
   ]);
-  
+
   const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
   const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
@@ -468,7 +521,7 @@ export default function TechVisual() {
     setFighterHealth((prev) => {
       const newHealth = [...prev];
       newHealth[index] = Math.max(0, newHealth[index] - 1);
-      
+
       // If destroyed, start respawn sequence
       if (newHealth[index] === 0) {
         setRespawningFighters((prevResp) => {
@@ -476,7 +529,7 @@ export default function TechVisual() {
           newResp[index] = true;
           return newResp;
         });
-        
+
         // Respawn after 2 seconds
         setTimeout(() => {
           setRespawnProgress((prevProg) => {
@@ -484,21 +537,21 @@ export default function TechVisual() {
             newProg[index] = 0;
             return newProg;
           });
-          
+
           // Animate respawn progress over 1.5 seconds
           const startTime = Date.now();
           const duration = 1500;
-          
+
           const animate = () => {
             const elapsed = Date.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
+
             setRespawnProgress((prevProg) => {
               const newProg = [...prevProg];
               newProg[index] = progress;
               return newProg;
             });
-            
+
             if (progress < 1) {
               requestAnimationFrame(animate);
             } else {
@@ -508,14 +561,14 @@ export default function TechVisual() {
                 newResp[index] = false;
                 return newResp;
               });
-              
+
               // Restore health and randomize parameters
               setFighterHealth((prevHealth) => {
                 const newHealth = [...prevHealth];
                 newHealth[index] = 3;
                 return newHealth;
               });
-              
+
               setFighters((prev) => {
                 const newFighters = [...prev];
                 newFighters[index] = {
@@ -527,11 +580,11 @@ export default function TechVisual() {
               });
             }
           };
-          
+
           animate();
         }, 2000);
       }
-      
+
       return newHealth;
     });
   };
@@ -555,26 +608,27 @@ export default function TechVisual() {
         <ambientLight intensity={0.3} />
         <pointLight position={[5, 5, 5]} intensity={1.5} color="#2dd4bf" />
         <pointLight position={[-5, -5, -5]} intensity={1} color="#a855f7" />
-        
+
         <CapitalShip />
-        
+
         {/* Fighter squadron */}
-        {fighters.map((fighter, index) => 
-          fighterHealth[index] > 0 && (
-            <FighterShip
-              key={fighter.id}
-              position={[-2, 0, 0]}
-              speed={fighter.speed}
-              delay={fighter.delay}
-              onPositionUpdate={updateFighterPosition(index)}
-              isRespawning={respawningFighters[index]}
-              respawnProgress={respawnProgress[index]}
-            />
-          )
+        {fighters.map(
+          (fighter, index) =>
+            fighterHealth[index] > 0 && (
+              <FighterShip
+                key={fighter.id}
+                position={[-2, 0, 0]}
+                speed={fighter.speed}
+                delay={fighter.delay}
+                onPositionUpdate={updateFighterPosition(index)}
+                isRespawning={respawningFighters[index]}
+                respawnProgress={respawnProgress[index]}
+              />
+            )
         )}
-        
-        <BattleScene 
-          fighterPositions={fighterPositions} 
+
+        <BattleScene
+          fighterPositions={fighterPositions}
           fighterHealth={fighterHealth}
           respawningFighters={respawningFighters}
           onFighterHit={handleFighterHit}
