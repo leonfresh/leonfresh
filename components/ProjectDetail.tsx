@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, Reorder } from "framer-motion";
 import { GripVertical, X, ExternalLink, Tag, ChevronDown } from "lucide-react";
 import { Project } from "../types";
@@ -64,6 +65,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
   onReorderImages,
   onUpdateProject,
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [images, setImages] = useState<string[]>(() => project.images);
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
   const [showScrollHint, setShowScrollHint] = useState(true);
@@ -75,6 +77,10 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
     () => project.thumbnailPosition?.y ?? 50
   );
   const saveThumbTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -151,56 +157,60 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      ref={scrollContainerRef}
-      onClick={onClose}
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xl px-0 md:px-8"
-    >
-      {lightboxItem && (
-        <div
-          className="fixed inset-0 z-[60]"
-          onClick={(e) => e.stopPropagation()}
-        >
+    <>
+      {isMounted &&
+        lightboxItem &&
+        createPortal(
           <div
-            className="absolute inset-0 bg-black/90 backdrop-blur-md"
-            onClick={() => setLightboxItem(null)}
-          />
-
-          <button
-            type="button"
-            onClick={() => setLightboxItem(null)}
-            className="absolute top-4 right-4 z-[61] p-2 rounded-full bg-black/50 text-white hover:bg-white hover:text-black transition-colors"
-            aria-label="Close image"
+            className="fixed inset-0 z-[60]"
+            onClick={(e) => e.stopPropagation()}
           >
-            <X size={24} />
-          </button>
+            <div
+              className="absolute inset-0 bg-black/90 backdrop-blur-md"
+              onClick={() => setLightboxItem(null)}
+            />
 
-          <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 sm:p-8">
-            {lightboxItem.kind === "video" ? (
-              <video
-                src={lightboxItem.src}
-                className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl"
-                controls
-                playsInline
-              />
-            ) : (
-              <img
-                src={lightboxItem.src}
-                alt="Expanded view"
-                className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain"
-              />
-            )}
-          </div>
-        </div>
-      )}
+            <button
+              type="button"
+              onClick={() => setLightboxItem(null)}
+              className="absolute top-4 right-4 z-[61] p-2 rounded-full bg-black/50 text-white hover:bg-white hover:text-black transition-colors"
+              aria-label="Close image"
+            >
+              <X size={24} />
+            </button>
 
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-6xl mx-auto min-h-screen md:min-h-0 md:my-12 bg-[#0a0a0a] rounded-none md:rounded-3xl overflow-hidden border-0 md:border border-white/10 shadow-2xl flex flex-col-reverse md:flex-row"
+            <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 sm:p-8">
+              {lightboxItem.kind === "video" ? (
+                <video
+                  src={lightboxItem.src}
+                  className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl"
+                  controls
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={lightboxItem.src}
+                  alt="Expanded view"
+                  className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain"
+                />
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        ref={scrollContainerRef}
+        onClick={onClose}
+        className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xl px-0 md:px-8"
       >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="relative w-full max-w-6xl mx-auto min-h-screen md:min-h-0 md:my-12 bg-[#0a0a0a] rounded-none md:rounded-3xl overflow-hidden border-0 md:border border-white/10 shadow-2xl flex flex-col-reverse md:flex-row"
+        >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -458,7 +468,8 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
           </div>
         </div>
       </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 
