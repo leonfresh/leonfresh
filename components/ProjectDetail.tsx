@@ -179,19 +179,24 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
               <X size={24} />
             </button>
 
-            <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 sm:p-8">
+            <div
+              className="absolute inset-0 z-[60] flex items-center justify-center p-4 sm:p-8"
+              onClick={() => setLightboxItem(null)}
+            >
               {lightboxItem.kind === "video" ? (
                 <video
                   src={lightboxItem.src}
                   className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl"
                   controls
                   playsInline
+                  onClick={(e) => e.stopPropagation()}
                 />
               ) : (
                 <img
                   src={lightboxItem.src}
                   alt="Expanded view"
                   className="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain"
+                  onClick={(e) => e.stopPropagation()}
                 />
               )}
             </div>
@@ -248,7 +253,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
                       <img
                         src={img}
                         alt={`${project.title} screenshot ${idx + 1}`}
-                        className="w-full h-auto rounded-xl shadow-2xl select-none"
+                        className="w-full h-auto rounded-xl shadow-2xl select-none cursor-zoom-in"
                         draggable={false}
                         onClick={() =>
                           setLightboxItem({ src: img, kind: "image" })
@@ -273,7 +278,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({
                     <img
                       src={img}
                       alt={`${project.title} screenshot ${idx + 1}`}
-                      className="w-full h-auto rounded-xl shadow-2xl"
+                      className="w-full h-auto rounded-xl shadow-2xl cursor-zoom-in"
                       onClick={() =>
                         setLightboxItem({ src: img, kind: "image" })
                       }
